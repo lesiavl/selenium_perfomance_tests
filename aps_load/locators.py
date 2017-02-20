@@ -3,8 +3,10 @@
 owner_users = {'email': 'qa845@meta.ua',
                'password': 'selenide'}
 
-provider_users = {'lexins@bigmir.net': 'fondriest',
-                  'qatest55@meta.ua': 'selenide'
+provider_users = {'lexins@bigmir.net': 'fondriest'
+                # 'qatest55@meta.ua': 'selenide',
+                # 'test-supply@meta.ua': '0564305488',
+                # 'Rudakov.d@meta.ua': '0564305488'
                   }
 
 broker = {'url': 'https://e-test.aps-market.com/tender'}
@@ -39,7 +41,7 @@ input_start_tender = """ var date = new Date();
                     $("#date_tender_start").datetimepicker({ allowTimes: [], format: "d.m.Y H:i", value: date })"""
 
 input_end_tender = """ var date = new Date();
-                    date.setHours(date.getHours(), date.getMinutes() + 30);
+                    date.setDate(date.getDate() + 5);
                     $("#date_tender_end").datetimepicker({ allowTimes: [], format: "d.m.Y H:i", value: date })"""
 
 next_button = '//*[@id="CreateTender"]'
@@ -87,7 +89,7 @@ save_changes = '//*[@id="AddItemButton"]'
 add_tender_doc = '//*[@id="addFile"]'
 select_type = '//*[@id="TypesFilesDropDown"]'
 select_doc_type = '//*[@id="TypesFilesDropDown"]/option[5]'
-file_input = '//*[@id="name_file"]'
+file_input = '//*[@id="FileUpload"]'
 submit_tender_doc_upload = '//*[@id="UploadFile"]'
 delete_doc = '//*[@id="DelFileBtn_"]'
 create_tender_draft = '//*[@id="sumbit"]'
@@ -108,11 +110,11 @@ select_tender = '//p[contains(text(), "[ТЕСТУВАННЯ] LOAD_TEST_Below_Th
 
 # # make bid
 
-all_bids = '//*[@id="tabs"]/li[4]/a'
-input_bid_amount = '//*[@name="input_lot_sum"]'
-input_bid_doc = '//*[@id="name_file_bid"]'
+all_bids = u'//a[contains(text(), "Пропозиції")]'
+input_bid_amount = '//*[@id="editBid"]'
+input_bid_doc = '//*[@id="FileUpload_bids"]'
 submit_bid_doc = '//*[@id="UploadFileToBid"]'
-submit_bid_button = '//*[@id="AddBiddsumButton2"]'
+submit_bid_button = '//*[@id="AddNoLotBid"]'
 
 delete_bid_button = '(//*[@class="btn btn-yellow dt_button"])[2]'
 

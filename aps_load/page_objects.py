@@ -3,8 +3,7 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import selenium.webdriver.support.ui as ui
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException, WebDriverException
 from locators import *
 from time import sleep
 import service
@@ -141,7 +140,7 @@ class CreateTenderPage:
             wait_until_visible(self.driver, save_changes)
             self.driver.find_element_by_xpath(save_changes).click()
         except NoSuchElementException:
-            sleep(1)
+            sleep(3)
             self.driver.find_element_by_xpath(save_changes).click()
 
         self.driver.implicitly_wait(5)
@@ -151,8 +150,11 @@ class CreateTenderPage:
         wait_until_visible(self.driver, select_type)
         self.driver.find_element_by_xpath(select_type).click()
         self.driver.find_element_by_xpath(select_doc_type).click()
-        file_to_upload = service.relative2absolute('./Doc1.docx')
+        sleep(1)
+        file_to_upload = service.relative2absolute('./doc1.docx')
         self.driver.find_element_by_xpath(file_input).send_keys(file_to_upload)
+        sleep(2)
+        wait_until_visible(self.driver, submit_tender_doc_upload)
         self.driver.find_element_by_xpath(submit_tender_doc_upload).click()
 
         self.driver.implicitly_wait(5)
@@ -199,7 +201,7 @@ class FindTenderPage(CreateTenderPage):
         wait_for_presence(self.driver, input_search_field)
         self.driver.find_element_by_xpath(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_xpath(search_tender_button).click()
-        wait_until_visible(self.driver, select_tender)
+        wait_before_click(self.driver, select_tender)
         self.driver.find_element_by_xpath(select_tender).click()
         return tender_id
 
@@ -211,9 +213,10 @@ class MakeBidPage:
     def make_bid(self):
 
         is_found = False
-        for i in range(1, 100):
+        for i in range(1, 150):
             try:
-                wait_for_presence(self.driver, all_bids)
+                wait_until_visible(self.driver, all_bids)
+                self.driver.find_element_by_xpath(all_bids).click()
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
@@ -224,8 +227,9 @@ class MakeBidPage:
             return False
 
         self.driver.find_element_by_xpath(all_bids).click()
+        wait_until_visible(self.driver, input_bid_amount)
         self.driver.find_element_by_xpath(input_bid_amount).send_keys(10000)
-        file_to_upload = service.relative2absolute('./Doc1.docx')
+        file_to_upload = service.relative2absolute('./doc1.docx')
         self.driver.find_element_by_xpath(input_bid_doc).send_keys(file_to_upload)
         self.driver.find_element_by_xpath(submit_bid_doc).click()
 
