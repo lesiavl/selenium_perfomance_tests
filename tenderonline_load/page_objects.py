@@ -52,10 +52,12 @@ class LoginPage:
 
     def login_as_provider(self):
         wait_until_visible(self.driver, login_button, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(login_button).click()
+        wait_before_click(self.driver, username_field, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
-        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
 
 
@@ -65,10 +67,11 @@ class CreateTenderPage:
         self.driver = driver
 
     def create_tender(self):
-
-        wait_until_visible(self.driver, create_tender_button, select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_css_selector(create_tender_button).click()
         sleep(2)
+        wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(close_notification).click()
+
+        wait_until_visible(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(input_value_amount).send_keys(10000)
         self.driver.find_element_by_css_selector(input_min_step).send_keys(100)
         self.driver.execute_script("window.scrollTo(0, 525);")
