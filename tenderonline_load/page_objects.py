@@ -59,6 +59,7 @@ class LoginPage:
         self.driver.find_element_by_css_selector(submit_login_button).click()
         wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
+        self.driver.get('http://25h8.byustudio.in.ua/tenders/index')
 
 
 class CreateTenderPage:
@@ -67,7 +68,7 @@ class CreateTenderPage:
         self.driver = driver
 
     def create_tender(self):
-        sleep(2)
+        sleep(3)
         wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
 
@@ -183,6 +184,7 @@ class MakeBidPage:
         is_found = False
         for i in range(1, 100):
             try:
+                wait_until_visible(self.driver, input_bid_amount, select_type=By.CSS_SELECTOR)
                 self.driver.find_element_by_xpath(input_bid_amount).click()
                 wait_until_visible(self.driver, submit_bid_button)
                 is_found = True
@@ -190,11 +192,14 @@ class MakeBidPage:
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
                 sleep(15)
                 self.driver.refresh()
+                self.driver.execute_script("window.scrollTo(0, 3238);")
 
         if not is_found:
             return False
 
-        self.driver.execute_script("window.scrollTo(0, 278);")
+        self.driver.execute_script("window.scrollTo(0, 3238);")
+        file_to_upload = service.relative2absolute('./doc1.docx')
+        self.driver.find_element_by_xpath(add_doc).send_keys(file_to_upload)
 
         return True
 

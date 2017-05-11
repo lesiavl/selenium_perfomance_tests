@@ -3,11 +3,9 @@
 owner_users = {'email': 'prozorroytenderowner@gmail.com',
                'password': '123456'}
 
-provider_users = {'prozorroyprovider1@gmail.com': '123456',
-                  'prozorroyprovider2@gmail.com': '123456'
+provider_users = {'prozorroyprovider1@gmail.com': '123456'
                   }
 
-#  'testproz970+pr6@gmail.com': 'testtest1'
 broker = {'url': 'http://tender-online.com.ua'}
 
 # login
