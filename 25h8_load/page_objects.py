@@ -67,10 +67,10 @@ class CreateTenderPage:
         self.driver = driver
 
     def create_tender(self):
-
-        wait_until_visible(self.driver, create_tender_button, select_type=By.CSS_SELECTOR)
+        sleep(3)
+        wait_before_click(self.driver, create_tender_button, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(create_tender_button).click()
-
+        sleep(2)
         wait_until_visible(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(input_value_amount).send_keys(10000)
         self.driver.find_element_by_css_selector(input_min_step).send_keys(100)

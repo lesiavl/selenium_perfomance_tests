@@ -3,12 +3,9 @@
 from page_objects import *
 from selenium import webdriver
 
-import datetime
 import time
 import Queue
 import threading
-
-import traceback
 
 
 tenders = Queue.Queue()
@@ -22,8 +19,6 @@ runs = Queue.Queue()
 
 
 class CreateTenders(threading.Thread):
-    exited = False
-
     def __init__(self, queue, driver):
         threading.Thread.__init__(self)
         self.queue = queue
@@ -47,22 +42,12 @@ class CreateTenders(threading.Thread):
                 self.create_tender_page.create_tender()
 
                 tenders_ids.append(self.find_tender.get_tender_id())
-            except Exception as error:
-                self.driver.close()
-                self.exited = True
-                print(error)
-                traceback.print_exc()
-                raise error
             finally:
-                if not self.exited:
-                    self.driver.close()
-
                 self.queue.task_done()
+                self.driver.close()
 
 
 class MakeTendersBids(threading.Thread):
-    exited = False
-
     def __init__(self, queue, user, password, tender_id, driver):
         threading.Thread.__init__(self)
         self.queue = queue
@@ -91,14 +76,8 @@ class MakeTendersBids(threading.Thread):
                 
                 bids_failed[self.tender_id] = 'passed'
                 print('Bid success for tender {}'.format(self.tender_id))
-            except Exception as error:
-                self.driver.close()
-                # self.exited = False
-                # print(error)
-                traceback.print_ex
-                raise error
-            # finally:
-            #     self.queue.task_done()
+            finally:
+                self.queue.task_done()
 
 
 class RunTenderBids(threading.Thread):
@@ -116,11 +95,14 @@ class RunTenderBids(threading.Thread):
 
             # Process business logic
             try:
-                with open('load_results.txt', 'a') as fl:
-                    fl.write('{} started bid for {} —---------------- STARTED\n'.format(self.providerAndTender, datetime.datetime.now()))
-                    self.make_bid_page.run_bid()
-                    fl.write('{} made bid for {} —---------------- FINISHED\n'.format(self.providerAndTender, datetime.datetime.now()))
-                    fl.close()
+                with open('load_results.txt', 'a') as f:
+                    f.write('{} started bid for {} —---------------- STARTED\n'.format(self.providerAndTender, datetime.now()))
+                    f.close()
+                self.make_bid_page.run_bid()
+
+                with open('load_results.txt', 'a') as f:
+                    f.write('{} made bid for {} —---------------- FINISHED\n'.format(self.providerAndTender, datetime.now()))
+                    f.close()
             finally:
                 self.queue.task_done()
 
@@ -151,7 +133,7 @@ for tid in tenders_ids:
         driver = webdriver.Chrome()
         driver.set_window_size(1200, 1000)
         drivers['{} {}'.format(provider[0], tid)] = driver
-
+        
         b = MakeTendersBids(bids, provider[0], provider[1], tid, driver)
         b.setDaemon(True)
         print(provider[0], tid)
@@ -184,6 +166,3 @@ runs.join()
 print('Runs performed')
 
 print("Elapsed Time: %s" % (time.time() - start))
-
-for driver in drivers:
-    drivers[driver].close()
