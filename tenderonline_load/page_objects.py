@@ -52,6 +52,8 @@ class LoginPage:
 
     def login_as_provider(self):
         wait_until_visible(self.driver, login_button, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(login_button).click()
+        wait_before_click(self.driver, username_field, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
@@ -65,10 +67,14 @@ class CreateTenderPage:
         self.driver = driver
 
     def create_tender(self):
-
-        wait_until_visible(self.driver, create_tender_button, select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_css_selector(create_tender_button).click()
+        sleep(5)
+        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(close_notification).click()
         sleep(2)
+        self.driver.execute_script("window.scrollTo(0, 318);")
+        wait_until_visible(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(input_value_amount).click()
+        # sleep(2)
         self.driver.find_element_by_css_selector(input_value_amount).send_keys(10000)
         self.driver.find_element_by_css_selector(input_min_step).send_keys(100)
         self.driver.execute_script("window.scrollTo(0, 525);")
@@ -161,7 +167,12 @@ class FindTenderPage(CreateTenderPage):
 
     def find_tender(self, id_tender):
         tender_id = id_tender
-        wait_for_presence(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
+        sleep(5)
+        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(close_notification).click()
+        sleep(2)
+        wait_before_click(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
+        self.driver.find_element_by_css_selector(input_search_field).click()
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_css_selector(search_tender_button).click()
         sleep(5)
@@ -180,18 +191,22 @@ class MakeBidPage:
         is_found = False
         for i in range(1, 100):
             try:
+                wait_until_visible(self.driver, input_bid_amount, select_type=By.CSS_SELECTOR)
                 self.driver.find_element_by_xpath(input_bid_amount).click()
-                wait_until_visible(self.driver, submit_bid_button)
+                wait_until_visible(self.driver, add_doc, select_type=By.XPATH)
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
                 sleep(15)
                 self.driver.refresh()
+                self.driver.execute_script("window.scrollTo(0, 3238);")
 
         if not is_found:
             return False
 
-        self.driver.execute_script("window.scrollTo(0, 278);")
+        self.driver.execute_script("window.scrollTo(0, 3238);")
+        file_to_upload = service.relative2absolute('./doc1.docx')
+        self.driver.find_element_by_xpath(add_doc).send_keys(file_to_upload)
 
         return True
 
@@ -207,5 +222,3 @@ class MakeBidPage:
             raise error
 
         return True
-
-

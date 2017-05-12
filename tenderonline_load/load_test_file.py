@@ -57,7 +57,7 @@ class CreateTenders(threading.Thread):
                 if not self.exited:
                     self.driver.close()
 
-                self.queue.task_done()
+                    self.queue.task_done()
 
 
 class MakeTendersBids(threading.Thread):
@@ -81,6 +81,7 @@ class MakeTendersBids(threading.Thread):
             # Process business logic
             try:
                 self.login_page_provider.login_as_provider()
+                self.driver.get(tenders_list)
                 self.find_tender.find_tender(self.tender_id)
 
                 if not self.make_bid_page.make_bid():

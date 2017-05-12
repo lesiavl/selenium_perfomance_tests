@@ -4,7 +4,10 @@ owner_users = {'email': 'prozorroytenderowner@gmail.com',
                'password': '123456'}
 
 provider_users = {'prozorroyprovider1@gmail.com': '123456',
-                  'prozorroyprovider2@gmail.com': '123456'
+                  'uaceseller1@mail.ru': 'andriy85',
+                  'uaceseller2@mail.ru': 'andriy85',
+                  'q.a.start1@gmail.com': 'q.a.start1@gmail.com',
+                  'qa.star.t1@gmail.com': '0445450232aa'
                   }
 
 #  'testproz970+pr6@gmail.com': 'testtest1'
@@ -61,6 +64,7 @@ submit_create_tender = 'body > div > div.container > div.col-md-offset-3.col-md-
 
 tender_get_id_locator = '//span[@tid="tenderID"]'  # xpathUA-2017-05-10-000131-1
 # go to create tender url
+tenders_list = 'https://tender-online.com.ua/tenders/index'
 input_search_field = '#tenderssearch-tender_cbd_id'
 search_tender_button = '#w0 > div:nth-child(4) > div:nth-child(2) > button'
 select_tender = '#w1 > div:nth-child(2) > div.panel.panel-default > div > div.col-md-3 > div > a'

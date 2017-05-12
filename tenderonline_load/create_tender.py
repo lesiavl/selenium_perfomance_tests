@@ -30,6 +30,7 @@ class TestCreateTender(SeleniumMixin):
 
     def test_create_tender(self):
         self.login_page_owner.login_as_owner()
+        self.driver.get(create_tender_url)
         self.create_tender_page.create_tender()
 
         is_found = False
