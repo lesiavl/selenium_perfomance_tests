@@ -25,7 +25,7 @@ class TestCreateTender(SeleniumMixin):
         self.find_tender = FindTenderPage(self.driver)
 
     def test_create_15_tenders(self):
-        for i in range(12):
+        for i in range(1):
             subprocess.Popen('python create_tender.py', shell=True)
 
 if __name__ == '__main__':

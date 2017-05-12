@@ -3,6 +3,7 @@
 owner_users = {'email': 'prozorroytenderowner@gmail.com',
                'password': '123456'}
 
+
 provider_users = {'prozorroyprovider1@gmail.com': '123456',
                   'uaceseller1@mail.ru': 'andriy85',
                   'uaceseller2@mail.ru': 'andriy85',
@@ -10,7 +11,6 @@ provider_users = {'prozorroyprovider1@gmail.com': '123456',
                   'qa.star.t1@gmail.com': '0445450232aa'
                   }
 
-#  'testproz970+pr6@gmail.com': 'testtest1'
 broker = {'url': 'http://tender-online.com.ua'}
 
 # login
@@ -25,6 +25,7 @@ close_notification = '#events > div > div > div.modal-header > button'
 
 create_tender_url = 'http://tender-online.com.ua/buyer/tender/create'
 create_tender_button = 'body > div > div.container > div.tenders-index.m_viewlist-wrap > div.shadow_fix > a'
+
 input_value_amount = '#value-amount'
 input_min_step = '#minimalstepvalue-amount'
 input_title = '#tender-title'
@@ -43,7 +44,6 @@ confirm_cpv = '#btn-ok'
 
 select_country = '#deliveryaddress-0-countryname > option:nth-child(2)'
 
-select_dropdown_region = "#deliveryaddress-0-region > option:nth-child(5)"
 select_dropdown_region = "#deliveryaddress-0-region > option:nth-child(5)"
 input_locality = '#deliveryaddress-0-locality'
 input_delivery_address = '#deliveryaddress-0-streetaddress'

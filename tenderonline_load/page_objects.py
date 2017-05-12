@@ -57,8 +57,9 @@ class LoginPage:
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
-        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
+        self.driver.get('http://25h8.byustudio.in.ua/tenders/index')
 
 
 class CreateTenderPage:
@@ -67,6 +68,7 @@ class CreateTenderPage:
         self.driver = driver
 
     def create_tender(self):
+
         sleep(5)
         wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
