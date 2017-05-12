@@ -50,9 +50,9 @@ class CreateTenders(threading.Thread):
             except Exception as error:
                 self.driver.close()
                 self.exited = True
-                print(error)
                 traceback.print_exc()
                 raise error
+                print (error)
             finally:
                 if not self.exited:
                     self.driver.close()

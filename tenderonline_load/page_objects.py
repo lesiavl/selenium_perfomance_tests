@@ -67,10 +67,14 @@ class CreateTenderPage:
 
     def create_tender(self):
 
-        sleep(5)
-        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_css_selector(close_notification).click()
-        sleep(2)
+        try:
+            wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+        except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
+            sleep(5)
+            wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+            self.driver.find_element_by_css_selector(close_notification).click()
+            sleep(2)
+
         self.driver.execute_script("window.scrollTo(0, 318);")
         wait_until_visible(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(input_value_amount).click()
@@ -173,8 +177,19 @@ class FindTenderPage(CreateTenderPage):
             sleep(5)
             wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
             self.driver.find_element_by_css_selector(close_notification).click()
+            wait_until_invisible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
             sleep(2)
 
+
+        try:
+            self.driver.find_element_by_css_selector(input_search_field).click()
+        except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
+            sleep(5)
+            wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+            self.driver.find_element_by_css_selector(close_notification).click()
+            sleep(2)
+
+        sleep(3)
         self.driver.find_element_by_css_selector(input_search_field).click()
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_css_selector(search_tender_button).click()
@@ -196,7 +211,7 @@ class MakeBidPage:
             try:
                 wait_until_visible(self.driver, input_bid_amount, select_type=By.CSS_SELECTOR)
                 self.driver.find_element_by_xpath(input_bid_amount).click()
-                wait_until_visible(self.driver, add_doc, select_type=By.XPATH)
+                wait_until_visible(self.driver, submit_bid_button, select_type=By.CSS_SELECTOR)
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
@@ -215,10 +230,10 @@ class MakeBidPage:
 
     def run_bid(self):
         sleep(3)
-        self.driver.find_element_by_xpath(submit_bid_button).click()
+        self.driver.find_element_by_css_selector(submit_bid_button).click()
         sleep(5)
         try:
-            wait_for_presence(self.driver, delete_bid_button)
+            wait_for_presence(self.driver, delete_bid_button, select_type=By.CSS_SELECTOR)
             sleep(5)
         except TimeoutException as error:
             print(error)
