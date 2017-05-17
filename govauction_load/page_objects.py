@@ -57,6 +57,7 @@ class LoginPage:
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
+        wait_until_visible(self.driver, login_verif, select_type=By.CSS_SELECTOR)
 
         self.driver.get('http://25h8.byustudio.in.ua/tenders/index')
 
@@ -212,10 +213,10 @@ class MakeBidPage:
             return False
 
         self.driver.execute_script("window.scrollTo(0, 3238);")
-        file_to_upload = service.relative2absolute('./doc1.docx')
-        self.driver.find_element_by_xpath(add_doc).send_keys(file_to_upload)
-        wait_until_visible(self.driver, '#hidden_document_original > div > div:nth-child(1) > div:nth-child(1) > label', select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_xpath(add_doc).click()
+        # file_to_upload = service.relative2absolute('./doc1.docx')
+        # self.driver.find_element_by_xpath(add_doc).send_keys(file_to_upload)
+        # wait_until_visible(self.driver, '#hidden_document_original > div > div:nth-child(1) > div:nth-child(1) > label', select_type=By.CSS_SELECTOR)
+        # self.driver.find_element_by_xpath(add_doc).click()
 
         return True
 
