@@ -6,8 +6,8 @@ owner_users = {'email': 'prozorroytenderowner@gmail.com',
 
 provider_users = {'prozorroyprovider1@gmail.com': '123456',
                   'prozorroyprovider2@gmail.com': '123456',
-                  'q.a.s.t.a.r.t.1@gmail.com': '112233',
-                  'illya.petrusenko@gmail.com': '0445450232a'
+                  'test@test.test': '123456',
+                  'test1@test.test': '123456'
                   }
 
 
