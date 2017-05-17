@@ -34,6 +34,22 @@ def wait_for_text_presence(driver, element, text, select_type=By.XPATH):
         EC.text_to_be_present_in_element((select_type, element), text))
 
 
+def close_notif(driver):
+    for i in range(1):
+        try:
+            wait_until_visible(driver, close_notification, select_type=By.CSS_SELECTOR)
+            close_notif = driver.find_element_by_css_selector(close_notification)
+            sleep(2)
+            if close_notif.is_displayed():
+                sleep(1)
+                wait_before_click(driver, close_notification, select_type=By.CSS_SELECTOR)
+                driver.find_element_by_css_selector(close_notification).click()
+            else:
+                return False
+        except TimeoutException:
+            break
+
+
 class LoginPage:
     def __init__(self, email, password, driver):
         self.driver = driver
@@ -47,8 +63,7 @@ class LoginPage:
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
-        wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_css_selector(close_notification).click()
+        close_notif(self.driver)
 
     def login_as_provider(self):
         wait_until_visible(self.driver, login_button, select_type=By.CSS_SELECTOR)
@@ -58,8 +73,9 @@ class LoginPage:
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
         wait_until_visible(self.driver, login_verif, select_type=By.CSS_SELECTOR)
-
-        self.driver.get('http://25h8.byustudio.in.ua/tenders/index')
+        sleep(1)
+        close_notif(self.driver)
+        self.driver.get('http://25h8-exchange.byustudio.in.ua/tenders/index')
 
 
 class CreateTenderPage:
@@ -169,20 +185,16 @@ class FindTenderPage(CreateTenderPage):
 
     def find_tender(self, id_tender):
         tender_id = id_tender
-        try:
-            wait_before_click(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
-        except TimeoutException:
-            sleep(5)
-            wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-            self.driver.find_element_by_css_selector(close_notification).click()
-            wait_until_invisible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-            sleep(2)
 
-        sleep(3)
-        self.driver.find_element_by_css_selector(input_search_field).click()
+        try:
+            self.driver.get('http://25h8-exchange.byustudio.in.ua/tenders/index')
+            close_notif(self.driver)
+        except (TimeoutException, ElementNotVisibleException):
+            wait_until_visible(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
+
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_css_selector(search_tender_button).click()
-        sleep(5)
+        sleep(1)
         wait_for_presence(self.driver, select_tender, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(select_tender).click()
         return tender_id
