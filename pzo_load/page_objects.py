@@ -142,6 +142,7 @@ class CreateTenderPage:
         self.driver.find_element_by_xpath(input_delivery_end_date).click()
         self.driver.find_element_by_xpath(input_delivery_end_date).clear()
         delivery_end = service.time_service()[5]
+        wait_until_visible(self.driver, input_delivery_start_date, select_type=By.XPATH)
         self.driver.find_element_by_xpath(input_delivery_end_date).send_keys(delivery_end)
 
         self.driver.execute_script("window.scrollTo(0, 160);")
