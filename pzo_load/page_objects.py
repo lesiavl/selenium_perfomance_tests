@@ -10,27 +10,27 @@ import service
 
 
 def wait_before_click(driver, element, select_type=By.XPATH):
-    return ui.WebDriverWait(driver, 20).until(
+    return ui.WebDriverWait(driver, 30).until(
         EC.element_to_be_clickable((select_type, element)))
 
 
 def wait_until_visible(driver, element, select_type=By.XPATH):
-    return ui.WebDriverWait(driver, 20).until(
+    return ui.WebDriverWait(driver, 30).until(
         EC.visibility_of_element_located((select_type, element)))
 
 
 def wait_until_invisible(driver, element, select_type=By.XPATH):
-    return ui.WebDriverWait(driver, 20).until(
+    return ui.WebDriverWait(driver, 30).until(
         EC.invisibility_of_element_located((select_type, element)))
 
 
 def wait_for_presence(driver, element, select_type=By.XPATH):
-    return ui.WebDriverWait(driver, 20).until(
+    return ui.WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((select_type, element)))
 
 
 def wait_for_text_presence(driver, element, text, select_type=By.XPATH):
-    return ui.WebDriverWait(driver, 20).until(
+    return ui.WebDriverWait(driver, 30).until(
         EC.text_to_be_present_in_element((select_type, element), text))
 
 
@@ -62,7 +62,7 @@ class LoginPage:
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
-        wait_until_invisible(self.driver, submit_login_button, select_type=By.CSS_SELECTOR)
+        wait_until_invisible(self.driver, login_verif, select_type=By.CSS_SELECTOR)
 
         wait_until_visible(self.driver, ukr, select_type=By.XPATH)
         self.driver.find_element_by_xpath(ukr).click()
@@ -155,6 +155,7 @@ class CreateTenderPage:
         sleep(1)
         self.driver.find_element_by_xpath(add_doc).click()
         sleep(2)
+        wait_for_presence(self.driver, upload_document, select_type=By.XPATH)
         self.driver.find_element_by_xpath(upload_document).send_keys(file_to_upload)
         self.driver.find_element_by_xpath(select_doc_type).click()
         self.driver.find_element_by_xpath(select_doc_type_1).click()
@@ -172,8 +173,8 @@ class FindTenderPage(CreateTenderPage):
             def find_id():
                 sleep(5)
                 self.driver.refresh()
-                wait_until_visible(self.driver, tender_get_id_locator, select_type=By.CSS_SELECTOR)
-                tender_id = self.driver.find_element_by_css_selector(tender_get_id_locator).text
+                wait_until_visible(self.driver, tender_get_id_locator, select_type=By.XPATH)
+                tender_id = self.driver.find_element_by_xpath(tender_get_id_locator).text
                 matched = True
                 return tender_id
 
@@ -185,9 +186,9 @@ class FindTenderPage(CreateTenderPage):
                 break
 
         except TimeoutException:
-            self.driver.close()
+            self.driver.quit()
 
-        tender_id = self.driver.find_element_by_css_selector(tender_get_id_locator).text
+        tender_id = self.driver.find_element_by_xpath(tender_get_id_locator).text
         return tender_id
 
     def find_tender(self, id_tender):
@@ -197,8 +198,8 @@ class FindTenderPage(CreateTenderPage):
         wait_until_visible(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_css_selector(search_tender_button).click()
-        sleep(3)
-        wait_until_visible(self.driver, go_to_tender, select_type=By.CSS_SELECTOR)
+        sleep(5)
+        wait_for_presence(self.driver, go_to_tender, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(go_to_tender).click()
         return tender_id
 
@@ -214,6 +215,7 @@ class MakeBidPage:
         for i in range(1, 100):
             try:
                 wait_until_visible(self.driver, make_bid_button, select_type=By.XPATH)
+
                 self.driver.find_element_by_xpath(make_bid_button).click()
                 is_found = True
                 break
@@ -224,9 +226,10 @@ class MakeBidPage:
         if not is_found:
             return False
 
+        wait_before_click(self.driver, make_bid_button, select_type=By.XPATH)
         self.driver.find_element_by_xpath(make_bid_button).click()
 
-        self.driver.execute_script("window.scrollTo(0, 321);")
+        self.driver.execute_script("window.scrollTo(0, 273);")
         wait_until_visible(self.driver, input_bid_amount, select_type=By.XPATH)
         self.driver.find_element_by_xpath(input_bid_amount).send_keys(3000)
 

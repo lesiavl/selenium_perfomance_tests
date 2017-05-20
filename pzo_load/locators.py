@@ -5,7 +5,11 @@ owner_users = {'email': 'slam_ua@mail.ru',
 
 
 provider_users = {'nik.urgant@mail.ru': 'qwe123qwe',
-                  'maks.sotnikov.62@mail.ru': 'qwe123qwe'
+                  'maks.sotnikov.62@mail.ru': 'qwe123qwe',
+                  'provider123@i.ua': 'provider-123',
+                  'provider234@i.ua': 'provider-234',
+                  'provider345@i.ua': 'provider-345',
+                  'provider456@i.ua': 'provider-456'
                   }
 
 
@@ -14,11 +18,11 @@ broker = {'url': 'http://dev.pzo.com.ua/#login'}
 # login
 
 ukr = '(//a[@data-language="1"])[1]'
-# login_button = '//a[@href="#login"]'
+# logi n_button = '//a[@href="#login"]'
 username_field = '#loginform-email'
 pass_field = '#loginform-password'
 submit_login_button = '#login-form > div.form-group.actions-wrapper.m-t-30.m-b-0 > div > button'
-login_verif = '#w16 > ul > li.button-wrapper.dropdown.hidden-xs.open > a'
+login_verif = '#authorization-modal > div'
 
 # create tender
 
@@ -95,7 +99,7 @@ submit_create_tender = '#submitBtn'
 close_popup_window = '//button[@class="btn btn-default waves-effect waves-light btn-lg"]'
 
 # search for
-tender_get_id_locator = '#w0 > p.tender-id > span.value'
+tender_get_id_locator = '//p[@class="tender-id"]/span[2]'
 
 # go to create tender url
 input_search_field = '#tendersearchform-query'
