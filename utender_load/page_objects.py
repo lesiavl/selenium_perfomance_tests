@@ -197,7 +197,6 @@ class MakeBidPage:
             try:
                 wait_until_visible(self.driver, input_bid_amount, select_type=By.CSS_SELECTOR)
                 self.driver.find_element_by_css_selector(input_bid_amount).click()
-                self.driver.find_element_by_css_selector(input_bid_amount).send_keys(10000)
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
@@ -209,7 +208,6 @@ class MakeBidPage:
             return False
 
         self.driver.execute_script("window.scrollTo(0, 3238);")
-        self.driver.find_element_by_css_selector(input_bid_amount).click()
         self.driver.find_element_by_css_selector(input_bid_amount).send_keys(10000)
         wait_until_visible(self.driver, submit_bid_button, select_type=By.CSS_SELECTOR)
         file_to_upload = service.relative2absolute('./doc1.docx')
