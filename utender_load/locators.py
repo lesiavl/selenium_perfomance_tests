@@ -73,6 +73,6 @@ input_bid_amount = '#value-amount'
 
 # doc - add_doc
 submit_bid_button = '#submit_bid'
-delete_bid_button = '#bid_form > div.row.submit-buttons.checkbox > button.btn.btn-danger'
+assert_bid = '#w3 > button'
 
 

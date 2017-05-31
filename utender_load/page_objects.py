@@ -220,7 +220,7 @@ class MakeBidPage:
         self.driver.find_element_by_css_selector(submit_bid_button).click()
         sleep(5)
         try:
-            wait_for_presence(self.driver, delete_bid_button, select_type=By.CSS_SELECTOR)
+            wait_for_presence(self.driver, assert_bid, select_type=By.CSS_SELECTOR)
             sleep(5)
         except TimeoutException as error:
             print(error)
