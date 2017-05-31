@@ -13,7 +13,7 @@ import traceback
 
 tenders = Queue.Queue()
 tenders_ids = []
-tenders_threads = 6
+tenders_threads = 1
 
 bids = Queue.Queue()
 bids_failed = {}
@@ -81,7 +81,6 @@ class MakeTendersBids(threading.Thread):
             # Process business logic
             try:
                 self.login_page_provider.login_as_provider()
-                self.driver.get(tenders_list)
                 self.find_tender.find_tender(self.tender_id)
 
                 if not self.make_bid_page.make_bid():

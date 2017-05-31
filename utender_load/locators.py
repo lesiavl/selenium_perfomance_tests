@@ -5,7 +5,9 @@ owner_users = {'email': 'prozorroytenderowner@gmail.com',
 
 
 provider_users = {'prozorroyprovider1@gmail.com': '123456',
-                  'prozorroyprovider2@gmail.com': '123456'
+                  'prozorroyprovider2@gmail.com': '123456',
+                  'uaceseller1@mail.ru': 'andriy85',
+                  'uaceseller2@mail.ru': 'andriy85'
                   }
 
 broker = {'url': 'http://utender.com.ua'}

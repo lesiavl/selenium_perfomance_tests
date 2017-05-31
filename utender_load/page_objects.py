@@ -49,6 +49,7 @@ class LoginPage:
         self.driver.find_element_by_css_selector(submit_login_button).click()
         wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(close_notification).click()
+        wait_until_invisible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
 
     def login_as_provider(self):
         wait_until_visible(self.driver, login_button, select_type=By.CSS_SELECTOR)
@@ -57,6 +58,14 @@ class LoginPage:
         self.driver.find_element_by_css_selector(username_field).send_keys(self.email)
         self.driver.find_element_by_css_selector(pass_field).send_keys(self.password)
         self.driver.find_element_by_css_selector(submit_login_button).click()
+        try:
+            sleep(1)
+            wait_until_visible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+            self.driver.find_element_by_css_selector(close_notification).click()
+            wait_until_invisible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
+            sleep(2)
+        except TimeoutException:
+            pass
 
 
 class CreateTenderPage:
@@ -66,15 +75,10 @@ class CreateTenderPage:
 
     def create_tender(self):
 
-        # sleep(5)
-        # wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-        # self.driver.find_element_by_css_selector(close_notification).click()
-        # sleep(2)
-
-        self.driver.execute_script("window.scrollTo(0, 843);")
-        wait_until_visible(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
-        self.driver.find_element_by_css_selector(input_value_amount).click()
-        # sleep(2)
+        self.driver.execute_script("window.scrollTo(0, 730);")
+        sleep(1)
+        wait_before_click(self.driver, input_value_amount, select_type=By.CSS_SELECTOR)
+        sleep(4)
         self.driver.find_element_by_css_selector(input_value_amount).send_keys(10000)
         self.driver.find_element_by_css_selector(input_min_step).send_keys(100)
         self.driver.execute_script("window.scrollTo(0, 1601);")
@@ -168,15 +172,9 @@ class FindTenderPage(CreateTenderPage):
 
     def find_tender(self, id_tender):
         tender_id = id_tender
-        try:
-            wait_before_click(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
-        except TimeoutException:
-            sleep(5)
-            wait_before_click(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-            self.driver.find_element_by_css_selector(close_notification).click()
-            wait_until_invisible(self.driver, close_notification, select_type=By.CSS_SELECTOR)
-            sleep(2)
 
+        self.driver.get(tenders_list)
+        wait_before_click(self.driver, input_search_field, select_type=By.CSS_SELECTOR)
         sleep(3)
         self.driver.find_element_by_css_selector(input_search_field).click()
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
@@ -200,7 +198,6 @@ class MakeBidPage:
                 wait_until_visible(self.driver, input_bid_amount, select_type=By.CSS_SELECTOR)
                 self.driver.find_element_by_css_selector(input_bid_amount).click()
                 self.driver.find_element_by_css_selector(input_bid_amount).send_keys(10000)
-                wait_until_visible(self.driver, submit_bid_button, select_type=By.CSS_SELECTOR)
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
@@ -212,6 +209,9 @@ class MakeBidPage:
             return False
 
         self.driver.execute_script("window.scrollTo(0, 3238);")
+        self.driver.find_element_by_css_selector(input_bid_amount).click()
+        self.driver.find_element_by_css_selector(input_bid_amount).send_keys(10000)
+        wait_until_visible(self.driver, submit_bid_button, select_type=By.CSS_SELECTOR)
         file_to_upload = service.relative2absolute('./doc1.docx')
         self.driver.find_element_by_xpath(add_doc).send_keys(file_to_upload)
 
