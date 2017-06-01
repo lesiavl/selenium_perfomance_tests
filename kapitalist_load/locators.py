@@ -91,6 +91,6 @@ input_bid_doc = '#files'
 
 # doc - add_doc
 submit_bid_button = '#form0 > div.modal-footer > input'
-delete_bid_button = '#bids > div > fieldset > div > div.col-md-2 > a:nth-child(2)'
+delete_bid_button = '#bids > div > fieldset:nth-child(1) > div > div.col-md-2 > a'
 
 

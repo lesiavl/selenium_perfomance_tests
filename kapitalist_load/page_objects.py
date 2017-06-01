@@ -88,7 +88,6 @@ class CreateTenderPage:
         self.driver.find_element_by_css_selector(input_lot_description).send_keys('LOAD_TEST_Below_Threshold LOT')
 
         self.driver.execute_script("""$('#Value_Amount').data("kendoNumericTextBox").value('3000.00');""")
-        # self.driver.find_element_by_css_selector(input_value_amount).send_keys('3000.00')
         self.driver.execute_script("""$('#MinimalStep_Amount').data("kendoNumericTextBox").value('30.00');""")
 
         self.driver.find_element_by_css_selector(save_draft2).click()
@@ -96,13 +95,16 @@ class CreateTenderPage:
         wait_until_visible(self.driver, add_item, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(add_item).click()
 
+        self.driver.execute_script('location.href = "{}";'.format(input_item_description))
         self.driver.find_element_by_css_selector(input_item_description).send_keys('LOAD_TEST_Below_Threshold ITEM')
 
         self.driver.find_element_by_css_selector(select_cpv).click()
-        wait_until_visible(self.driver, select_cpv_1item, select_type=By.CSS_SELECTOR)
+        wait_before_click(self.driver, select_cpv_1item, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(select_cpv_1item).click()
-        wait_for_presence(self.driver, cpv_selected, select_type=By.CSS_SELECTOR)
+        sleep(2)
+        wait_before_click(self.driver, cpv_selected, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(select_cpv).click()
+        wait_until_invisible(self.driver, select_cpv_1item, select_type=By.CSS_SELECTOR)
 
         self.driver.execute_script('location.href = "{}";'.format(select_unit))
 
@@ -175,6 +177,7 @@ class FindTenderPage(CreateTenderPage):
         self.driver.find_element_by_css_selector(input_search_field).send_keys(tender_id)
         self.driver.find_element_by_css_selector(search_tender_button).click()
         wait_until_visible(self.driver, select_tender, select_type=By.CSS_SELECTOR)
+        sleep(1)
         self.driver.find_element_by_css_selector(select_tender).click()
         return tender_id
 
@@ -193,7 +196,6 @@ class MakeBidPage:
         for i in range(1, 100):
             try:
                 wait_until_visible(self.driver, make_bid_button, select_type=By.CSS_SELECTOR)
-                self.driver.find_element_by_css_selector(make_bid_button).click()
                 is_found = True
                 break
             except (TimeoutException, NoSuchElementException, ElementNotVisibleException):
@@ -203,6 +205,7 @@ class MakeBidPage:
         if not is_found:
             return False
 
+        self.driver.find_element_by_css_selector(make_bid_button).click()
         wait_until_visible(self.driver, select_lot, select_type=By.CSS_SELECTOR)
         self.driver.find_element_by_css_selector(select_lot).click()
         wait_until_visible(self.driver, input_bid_amount, select_type=By.XPATH)
